@@ -7,27 +7,73 @@ from utils import pager
 #展示Book表数据
 
 
+#cookie验证登录
+# def login(request):
+#     if request.method =="GET":
+#         return render(request,'login.html')
+#     else:
+#         res = {'user':None,'error':""}
+#         user = request.POST.get("username")
+#         password = request.POST.get("password")
+#         user_obj = models.Author.objects.filter(name=user,pwd=password).first()
+#         if user_obj:
+#             res['user'] = user
+#             ret= redirect("/index/")
+#             #设置cookie
+#             ret.set_cookie("username",user)
+#             ret.set_cookie("is_login",1)
+#             return ret
+#         else:
+#             res['error'] = "登录失败"
+#             return redirect("/login/")
 
+
+#session验证登录
 def login(request):
     if request.method =="GET":
         return render(request,'login.html')
     else:
         res = {'user':None,'error':""}
-        user = request.POST.get("user")
-        password = request.POST.get("pwd")
+        user = request.POST.get("username")
+        password = request.POST.get("password")
         user_obj = models.Author.objects.filter(name=user,pwd=password).first()
         if user_obj:
             res['user'] = user
-            return HttpResponse(json.dumps(res))
+
+            #设置session
+            request.session["username"] = user
+            request.session["is_login"] = 1
+
+
+            return redirect("/index/")
         else:
             res['error'] = "登录失败"
-            return HttpResponse(json.dumps(res))
-
-
+            return redirect("/login/")
+#cookie验证登录
+# def index(request):
+#
+#     is_login = request.COOKIES.get("is_login")
+#     print(is_login)
+#     if is_login =="1":
+#         return render(request,'index.html')
+#     else:
+#         return redirect("/login/")
+#session验证登录
 def index(request):
 
-    return render(request,'index.html')
+    is_login = request.session.get("is_login")
+    print(is_login)
+    print(type(is_login))
+    if is_login ==1:
+        return render(request,'index.html')
+    else:
+        return redirect("/login/")
 
+
+
+def logout(request):
+    request.session.flush()
+    return redirect("/login/")
 ################################书籍管理实现#####################################
 def book_list(request):
     if request.method=="GET":

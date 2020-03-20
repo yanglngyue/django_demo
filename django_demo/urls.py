@@ -25,6 +25,9 @@ urlpatterns = [
     url('login/', views.login),
 
     url('^index/', views.index),
+
+    url('^logout/', views.logout),
+
     # #有名分组
     # url(r'^articles/(?P<year>\d{4})/(?P<month>\d{2})/$',views.years_month),
     # #使用别名实现反向解析url,以此减少后期修改url造成的维护成本,前端调用{%url 'index'%}
