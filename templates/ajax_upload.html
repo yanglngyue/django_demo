@@ -1,0 +1,55 @@
+<!--注释是代码之母-->
+{% extends 'layout.html' %}
+{% block right-body %}
+
+<h3>文件上传ajax方式</h3>
+    <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+      <div class="form-group" >
+        <label for="exampleInputFile">File input</label>
+        <input type="file" id="exampleInputFile"  name="upload_ajax">
+        <p class="help-block">Example block-level help text here.</p>
+      </div>
+
+      <button type="submit" class="btn btn-default">提交</button>
+
+    </form>
+
+
+
+{% endblock %}
+{% block  script %}
+
+    {{ block.super }}
+    <script>
+
+    $(".btn").click(function () {
+
+        //Ajax上传文件需要使用formdata格式，所以需要将文件对象封装成formdata格式，普通输入框则不需要，因为默认urlencode格式
+
+        var formdata = new FormData();
+        formdata.append("upload_ajax",$("#exampleInputFile")[0].files[0]);
+        formdata.append("csrfmiddlewaretoken",$("[name='csrfmiddlewaretoken']").val());
+
+        $.ajax({
+
+            url:"/ajax_upload/",
+            type:"post",
+            //Ajax文件上传必备参数
+            processData:false,//不处理数据
+            contentType:false,//不设置内容类型
+            data:formdata,
+            success:function (response) {
+                console.log(response)
+
+            }
+
+
+        })
+
+    })
+    </script>
+
+
+{% endblock %}

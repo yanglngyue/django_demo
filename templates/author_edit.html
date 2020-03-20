@@ -1,0 +1,49 @@
+<!--注释是代码之母-->
+{% extends 'layout.html' %}
+
+{% block right-body %}
+    {{ block.super }}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h3>修改作者</h3>
+            <form action="{% url 'author_edit'  author_obj.id %}" method="post">
+                {% csrf_token %}
+              <div class="form-group">
+                <label for="name">作者名称</label>
+                <input type="text" class="form-control" id="name" placeholder="作者名称" name="name" value="{{ author_obj.name }}">
+              </div>
+                <div class="form-group">
+                <label for="age">年龄</label>
+                <input type="text" class="form-control" id="age" placeholder="年龄" name="age" value="{{ author_obj.age }}">
+              </div>
+
+
+                <div class="form-group">
+                <label for="email">邮箱</label>
+                <input type="text" class="form-control" id="email" placeholder="邮箱" name="email" value="{{ author_obj.email }}">
+              </div>
+
+                <div class="form-group">
+                <label for="addr">作者地址</label>
+                <input type="text" class="form-control" id="addr" placeholder="作者地址" name="addr" value="{{ author_obj.ad.addr }}">
+              </div>
+
+                <div class="form-group">
+                <label for="tel">作者电话</label>
+                <input type="text" class="form-control" id="tel" placeholder="作者地址" name="tel" value="{{ author_obj.ad.tel }}">
+              </div>
+
+
+
+
+
+              <button type="submit" class="btn btn-success pull-right" >Submit</button>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

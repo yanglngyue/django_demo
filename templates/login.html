@@ -1,0 +1,59 @@
+<!--注释是代码之母-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录界面</title>
+</head>
+<body>
+{% csrf_token %}
+<input type="text" id="username">用户名
+<input type="password" id="password">密码
+<input type="button" id="btn">提交   <span class="errors"></span>
+
+<script src="/static/js/jquery-3.3.1.min.js"></script>
+
+<script>
+
+    $("#btn").click(function () {
+        var user = $("#username").val();
+        var pwd = $("#password").val();
+
+       $.ajax({
+           url:"/login/",
+           type:"POST",
+           data:{
+               user:user,
+               pwd:pwd,
+               csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val(),
+
+           },
+
+           success:function (response) {
+
+               console.log(response);
+               var data = JSON.parse(response);
+               console.log(data.user);
+               if (data.user){
+                    location.href="/index/"
+                   //登录成功
+               }else {
+                   //登录失败
+                   $(".errors").html(data.error).css('color','red')
+
+               }
+
+           }
+
+
+       })
+
+
+    })
+
+</script>
+
+
+
+</body>
+</html>
